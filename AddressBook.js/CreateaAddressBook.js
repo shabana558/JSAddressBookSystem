@@ -1,0 +1,306 @@
+console.log("Welcome to the addressbook problem !!!! ");
+class ContactDetails {
+  constructor(...params) {
+    this.firstName = params[0];
+    this.lastName = params[1];
+    this.address = params[2];
+    this.city = params[3];
+    this.state = params[4];
+    this.zip = params[5];
+    this.mobileNumber = params[6];
+    this.emailId = params[7];
+  }
+
+  get firstName() {
+    return this._firstName;
+  }
+  set firstName(firstName) {
+    let firstNameRegex = RegExp("^[A-Z]{1}[a-z]{2,}");
+    if (firstNameRegex.test(firstName)) {
+      this._firstName = firstName;
+    } else {
+      throw "First name is invalid";
+    }
+  }
+
+  get lastName() {
+    return this._lastName;
+  }
+  set lastName(lastName) {
+    let lastNameRegex = RegExp("^[A-Z]{1}[a-z]{2,}");
+    if (lastNameRegex.test(lastName)) {
+      this._lastName = lastName;
+    } else {
+      throw "Last name is invalid";
+    }
+  }
+
+  get address() {
+    return this._address;
+  }
+  set address(address) {
+    let addressRegex = RegExp("^[A-Za-z0-9]{4,}$");
+    if (addressRegex.test(address)) {
+      this._address = address;
+    } else {
+      throw "Address is invalid";
+    }
+  }
+
+  get city() {
+    return this._city;
+  }
+  set city(city) {
+    let cityRegex = RegExp("^[A-Za-z]{4,}$");
+    if (cityRegex.test(city)) {
+      this._city = city;
+    } else {
+      throw "City is invalid";
+    }
+  }
+
+  get state() {
+    return this._state;
+  }
+  set state(state) {
+    let stateRegex = RegExp("^[A-Za-z]{4,}$");
+    if (stateRegex.test(state)) {
+      this._state = state;
+    } else {
+      throw "State is invalid";
+    }
+  }
+
+  get zip() {
+    return this._zip;
+  }
+  set zip(zip) {
+    let zipRegex = RegExp("^[1-9]{1}[0-9]{5}$");
+    if (zipRegex.test(zip)) {
+      this._zip = zip;
+    } else {
+      throw "Zip is invalid";
+    }
+  }
+  get mobileNumber() {
+    return this._mobileNumber;
+  }
+  set mobileNumber(mobileNumber) {
+    let mobileRegex = RegExp("^[0-9]{2}[ ][6-9]{1}[0-9]{9}$");
+    if (mobileRegex.test(mobileNumber)) {
+      this._mobileNumber = mobileNumber;
+    } else {
+      throw "Mobile number is invalid";
+    }
+  }
+
+  get emailId() {
+    return this._emailId;
+  }
+  set emailId(emailId) {
+    let emailRegex = RegExp(
+      "^[0-9a-z]+[+_.-]?[0-9a-z]+[@][0-9a-z]+[.][a-z]{2,}[.]?[a-z]+$"
+    );
+    if (emailRegex.test(emailId)) {
+      this._emailId = emailId;
+    } else {
+      throw "Email id is invalid";
+    }
+  }
+
+  toString() {
+    return (
+      "FirstName: " +
+      this.firstName +
+      ",LastName: " +
+      this.lastName +
+      ",Address: " +
+      this.address +
+      ",City: " +
+      this.city +
+      ",State: " +
+      this.state +
+      ",Zip: " +
+      this.zip +
+      ",MobileNumber: " +
+      this.mobileNumber +
+      ",EmailId: " +
+      this.emailId
+    );
+  }
+}
+
+//UC3:Add a contact into array
+console.log("To add a contact : ");
+let contacts = new Array();
+function AddContact(
+  firstName,
+  lastName,
+  address,
+  city,
+  state,
+  zip,
+  mobileNumber,
+  emailId
+) {
+  //to check for duplicate contact in the addressbook
+  if (contacts.some((x) => x.firstName == firstName)) {
+    console.log("Person exists !!!!!");
+    return;
+  }
+  let contact = new ContactDetails(
+    firstName,
+    lastName,
+    address,
+    city,
+    state,
+    zip,
+    mobileNumber,
+    emailId
+  );
+  //contact added into array
+  contacts.push(contact);
+}
+AddContact(
+  "Shabana",
+  "shakil",
+  "Hyderabad",
+  "Porumamilla",
+  "Kadapa",
+  "516193",
+  "91 987654321",
+  "shabana@gmail.com"
+);
+AddContact(
+  "Nagoor",
+  "Rasool",
+  "Kalasapadu",
+  "Bangalore",
+  "Karnataka",
+  "516217",
+  "91 963258741",
+  "rasool@gmail.com"
+);
+console.log(contacts.toString());
+
+//UC7:Find a contact and update it using first name
+function obtainingContactWithName(firstName) {
+  for (let i = 0; i < contacts.length; i++) {
+    if (contacts[i].firstName == firstName) {
+      return i;
+    }
+  }
+  return -1;
+}
+
+//UC4:editing a contact using first name
+let contactindex = obtainingContactWithName("Teju");
+if (contactindex != -1) {
+  console.log("Before Updation : ");
+  console.log(contacts.toString());
+  contacts[contactindex].firstName = "Sharuf";
+  contacts[contactindex].mobileNumber = "91 9325469871";
+  contacts[contactindex].zip = "500013";
+  console.log("Contacts after updation");
+  console.log(contacts.toString());
+} else {
+  console.log("Sorry....contact not foud");
+}
+
+//UC5:deleting a contact from array using name
+function deleteContactByName(firstName) {
+  for (let i = 0; i < contacts.length; i++) {
+    if (contacts[i].firstName == firstName) {
+      //removes the contact from array
+      contacts.pop(i);
+      console.log(contacts.toString());
+    }
+  }
+}
+//deleteContactByName('Shabana');
+//console.log("Contact deleted successfully");
+
+//UC6:count people
+//using reduce method
+let count = contacts.reduce((count) => {
+  count += 1;
+  return count;
+}, 0);
+console.log("Number of persons in adressBook is : " + count);
+
+//UC8:to search by city or state
+function SearchCityOrState(cityOrState) {
+  //using filter method
+  if (
+    contacts.filter(
+      ((obj) => obj.city == cityOrState) || ((obj) => obj.state == cityOrState)
+    )
+  ) {
+    console.log(contacts.toString());
+  }
+}
+//search for city
+console.log("Searching with city");
+SearchCityOrState("Hyderabad");
+//search for state
+console.log("Searching with state");
+SearchCityOrState("Karnataka");
+
+//UC9:View contact by city or state
+function ViewCityOrState(cityOrState) {
+  if (
+    contacts.filter(
+      ((p) => p.city == cityOrState) || ((p) => p.state == cityOrState)
+    )
+  ) {
+    console.log(contacts.toString());
+  }
+}
+//View By city
+console.log("searching with city");
+ViewCityOrState("kadapa");
+//View By state
+console.log("searching with state");
+ViewCityOrState("Kalasapadu");
+
+//UC10 get No.of persons by city or state
+function getCountByCity(city) {
+  return contacts
+    .filter((x) => x.city == city)
+    .reduce((countOfContact, x) => (countOfContact += 1), 0);
+}
+function getCountByState(state) {
+  return contacts
+    .filter((x) => x.state == state)
+    .reduce((countOfContact, x) => (countOfContact += 1), 0);
+}
+console.log(
+  "Number of contacts present in the city:  " + getCountByCity("Kadapa")
+);
+console.log(
+  "Number of contacts present in the state: " + getCountByState("Kalasapadu")
+);
+
+//UC11:Sort the contacts by name
+console.log("Sorting array by names");
+let sortedArray = new Array();
+contacts.forEach((contact) => sortedArray.push(contact.toString()));
+sortedArray.sort();
+console.log(sortedArray);
+
+//UC12:Sort contact by city,state or zip
+var sortByCityArray = contacts;
+var sortByStateArray = contacts;
+var sortByZipArray = contacts;
+//localeCompare() method checks if a given string comes before,after, or is same as other string in sort order.
+//Sort by city
+sortByCityArray.sort((a, b) => a.city.localeCompare(b.city));
+console.log("Contacts sorted by city:");
+sortByCityArray.forEach((contact) => console.log(contact.toString()));
+//Sort by state
+sortByStateArray.sort((a, b) => a.state.localeCompare(b.state));
+console.log("Contacts sorted by state:");
+sortByStateArray.forEach((contact) => console.log(contact.toString()));
+sortByZipArray.sort((a, b) => a.zip.localeCompare(b.zip));
+console.log("Contacts sorted by zip:");
+sortByZipArray.forEach((contact) => console.log(contact.toString()));
